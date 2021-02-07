@@ -1,17 +1,28 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <input type="text" v-model="searchText" @input="doSearch">
+    <DirList open="true" />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import DirList from './components/DirList.vue'
+import fileListStore from './stores/FileListStore.js';
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    DirList
+  },
+  data() {
+    return {
+      searchText: ''
+    }
+  },
+  methods: {
+    doSearch() {
+      fileListStore.filter(this.searchText);
+    }
   }
 }
 </script>
@@ -21,7 +32,6 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
   margin-top: 60px;
 }
