@@ -1,12 +1,7 @@
-const fileList = [];
-const filteredList = [];
-
-fetch('svgList.json')
-  .then(response => response.json())
-  .then(data => {
-    fileList.push(...data);
-    filteredList.push(...data);
-  });
+const glob = require("glob");
+ 
+const fileList = glob.sync("**/*.svg", { cwd: './public/svgs'});
+const filteredList = fileList;
 
 
 function get() {
