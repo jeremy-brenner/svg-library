@@ -1,14 +1,27 @@
 <template>
   <img 
-    :src="url" 
+    v-if="svgData"
     :title="url"
-  />
+    :src="svgData"
+  >
 </template>
 
 <script>
+  const fs = require('fs');
+
 export default {
   name: 'SVGItem',
-  props: ['url']
+  props: ['url'],
+  data() {
+    return {
+      svgData: ''
+    }
+  },
+  mounted() {
+    fs.readFile(this.url, (e,f) => {
+      this.svgData = `data:image/svg+xml;base64,${f.toString("base64")}`;
+    });
+  }
 }
 </script>
 

@@ -14,7 +14,7 @@
       v-for="dir in dirList" 
       :key="dir" 
       :position="dirPosition(dir)"
-      open="false"
+      open="true"
       />
     </div>
   </div>
@@ -53,7 +53,7 @@ export default {
         .map(f => f.replace(this.position,''))
     },
     fileList() {
-      return this.myFiles.filter(f => f.split('/').length == 1).map(f => `svgs/${this.position}${f}`)
+      return this.myFiles.filter(f => f.split('/').length == 1).map(f => `../svgs/${this.position}${f}`)
     },
     fileCount() {
       return this.myFiles.length;

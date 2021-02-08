@@ -1,8 +1,7 @@
 const glob = require("glob");
  
-const fileList = glob.sync("**/*.svg", { cwd: './public/svgs'});
+const fileList = glob.sync("**/*.svg", { cwd: '../svgs'});
 const filteredList = fileList;
-
 
 function get() {
   return filteredList
