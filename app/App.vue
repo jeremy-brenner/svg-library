@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <Settings />
     <input type="text" v-model="searchText" @input="doSearch">
    <!-- <DirList open="true" /> -->
 {{ files.length }}
@@ -7,13 +8,13 @@
 </template>
 
 <script>
-//import DirList from './components/DirList.vue'
+import Settings from './components/Settings.vue'
 import fileListStore from './stores/FileListStore.js';
 
 export default {
   name: 'App',
   components: {
-  //  DirList
+    Settings
   },
   data() {
     return {
@@ -36,5 +37,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
   background:white;
+  padding: 10px;
 }
 </style>

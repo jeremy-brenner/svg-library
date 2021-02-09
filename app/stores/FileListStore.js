@@ -1,47 +1,47 @@
-const fs = require('fs');
-const path = require('path');
 const chokidar = require('chokidar');
-
-const svgDir = '/Volumes/sambashare/Cricut';
+import settingsStore from './SettingsStore';
+//const svgDir = '/Volumes/sambashare/Cricut';
+//const svgDir = '../svgs';
 
 const fileList = [];
 const filteredList = [];
 
 let searchTerms = [];
 
+settingsStore.on('addLibrary', addLibrary);
+settingsStore.on('removeLibrary', removeLibrary);
 
- 
+const watcher = chokidar.watch()
+  .on('add', addFile)
+  .on('unlink', removeFile);
 
-chokidar.watch(svgDir + '/**/*.svg').on('all', (event, filePath) => {
-  const svgFile = path.relative(svgDir,filePath);
-    console.log(event, svgFile);
-    fileList.push(svgFile);
-    if(fileMatches(svgFile,searchTerms)){
-      filteredList.push(svgFile);
-    }
-});
+function addLibrary(dir) {
+  watcher.add(dir + '/**/*.svg');
+  filter(searchTerms.join(' '))
+}
 
-//findSvgsIn(svgDir);
+function removeLibrary(dir) {
+  watcher.unwatch(dir + '/**/*.svg');
+  filter(searchTerms.join(' '))
+}
 
+function addFile(filePath) {
+  fileList.push(filePath);
+  if(fileMatches(filePath,searchTerms)){
+    filteredList.push(filePath);
+  }
+}
 
-// function findSvgsIn(dir) {
-//   fs.readdir(dir, (e,files) => {
-//     files.forEach(file => {
-//       const filePath = path.join(dir,file);
-//       fs.stat(filePath, (e,stat) => {
-//         if(filePath,stat.isDirectory()) {
-//           findSvgsIn(filePath);
-//         }else if( filePath.endsWith('.svg') ){
-//           const svgFile = path.relative(svgDir,filePath);
-//           fileList.push(svgFile);
-//           if(fileMatches(svgFile,searchTerms)){
-//             filteredList.push(svgFile);
-//           }
-//         }
-//       });
-//     });
-//   })
-// }
+function removeFile(filePath) {
+  const i1 = fileList.indexOf(filePath);
+  if(i1>-1) {
+    fileList.splice(i1,1);
+  }
+  const i2 = filteredList.indexOf(filePath);
+  if(i2>-1) {
+    filteredList.splice(i2,1);
+  }
+}
 
 function get() {
   return filteredList
@@ -62,8 +62,16 @@ function filter(search){
 }
 
 function fileMatches(file, searchTerms) {
+  if(!fileInLibrary(file)) {
+    return false
+  }
   const fLower = file.toLowerCase();
   return searchTerms.length == 0 || searchTerms.reduce( (m,s) => m && fLower.includes(s), true )
+}
+
+function fileInLibrary(file) {
+  const libs = settingsStore.getLibraries();
+  return libs.reduce( (m,l) => m || file.startsWith(l), false );
 }
 
 

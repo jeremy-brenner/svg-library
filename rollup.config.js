@@ -20,7 +20,8 @@ export default {
 		}),
 		vue({
 		  compileTemplate: true,
-		  css: false
+		  css: false,
+		  needMap: false
 		}),
 		postcss({
 			config: {
