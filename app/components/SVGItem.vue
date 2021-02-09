@@ -19,6 +19,9 @@ export default {
   },
   mounted() {
     fs.readFile(this.url, (e,f) => {
+      if(e) {
+        console.log(e)
+      }
       this.svgData = `data:image/svg+xml;base64,${f.toString("base64")}`;
     });
   }

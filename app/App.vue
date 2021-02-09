@@ -1,22 +1,24 @@
 <template>
   <div id="app">
     <input type="text" v-model="searchText" @input="doSearch">
-    <DirList open="true" />
+   <!-- <DirList open="true" /> -->
+{{ files.length }}
   </div>
 </template>
 
 <script>
-import DirList from './components/DirList.vue'
+//import DirList from './components/DirList.vue'
 import fileListStore from './stores/FileListStore.js';
 
 export default {
   name: 'App',
   components: {
-    DirList
+  //  DirList
   },
   data() {
     return {
-      searchText: ''
+      searchText: '',
+      files: fileListStore.get()
     }
   },
   methods: {
