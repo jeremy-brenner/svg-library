@@ -1,11 +1,15 @@
 const settings = require('electron-settings');
 
 const libraries = [];
+let svgSize;
+
 const callbacks = {
     addLibrary: [],
-    removeLibrary: []
+    removeLibrary: [],
+    svgSize: []
 }
 settings.get('libraries').then( libs => libs && libs.forEach( lib => _addLibrary(lib) ) )
+settings.get('svgSize').then( size => setSvgSize(size ? size : 50) );
 
 function _addLibrary(dir) {
     libraries.push(dir);
@@ -38,4 +42,14 @@ function on(type,cb) {
   callbacks[type].push(cb);
 }
 
-export default { addLibrary, removeLibrary, getLibraries, on }
+function getSvgSize() {
+  return svgSize;
+}
+
+function setSvgSize(size) {
+  svgSize = size;
+  settings.set('svgSize', size);
+  callbacks['svgSize'].forEach( cb => cb(size))
+}
+
+export default { addLibrary, removeLibrary, getLibraries, getSvgSize, setSvgSize, on }

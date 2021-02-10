@@ -1,36 +1,39 @@
 <template>
   <img 
-    v-if="svgData"
-    :title="url"
-    :src="svgData"
+    v-if="svgFile.urlData"
+    :title="svgFile.path"
+    :src="svgFile.urlData"
+    :style="myStyle"
   >
 </template>
 
 <script>
-  const fs = require('fs');
+import settingsStore from '../stores/SettingsStore.js';
 
 export default {
   name: 'SVGItem',
-  props: ['url'],
+  props: ['file'],
   data() {
     return {
-      svgData: ''
+      svgFile: this.file,
+      svgSize: 50
+    }
+  },
+  computed: {
+    myStyle() {
+      return {
+        width:  `${this.svgSize}px`,
+        height:  `${this.svgSize}px`
+      }    
     }
   },
   mounted() {
-    fs.readFile(this.url, (e,f) => {
-      if(e) {
-        console.log(e)
-      }
-      this.svgData = `data:image/svg+xml;base64,${f.toString("base64")}`;
-    });
+    this.svgSize = settingsStore.getSvgSize();
+    settingsStore.on('svgSize', size => this.svgSize = size);
   }
 }
 </script>
 
 <style scoped>
-  img {
-    width: 50px;
-    height: 50px;
-  }
+
 </style>

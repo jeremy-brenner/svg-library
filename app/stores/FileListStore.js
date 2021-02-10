@@ -1,7 +1,8 @@
 const chokidar = require('chokidar');
 import settingsStore from './SettingsStore';
-//const svgDir = '/Volumes/sambashare/Cricut';
-//const svgDir = '../svgs';
+import SVGFile from './SVGFile.js';
+
+const ignores = ['__MACOSX'];
 
 const fileList = [];
 const filteredList = [];
@@ -26,18 +27,19 @@ function removeLibrary(dir) {
 }
 
 function addFile(filePath) {
-  fileList.push(filePath);
-  if(fileMatches(filePath,searchTerms)){
-    filteredList.push(filePath);
+  const file = new SVGFile(filePath);
+  fileList.push(file);
+  if(fileMatches(file.path,searchTerms)){
+    filteredList.push(file);
   }
 }
 
 function removeFile(filePath) {
-  const i1 = fileList.indexOf(filePath);
+  const i1 = fileList.findIndex(f => f.path == filePath);
   if(i1>-1) {
     fileList.splice(i1,1);
   }
-  const i2 = filteredList.indexOf(filePath);
+  const i2 = filteredList.findIndex(f => f.path == filePath);
   if(i2>-1) {
     filteredList.splice(i2,1);
   }
@@ -55,13 +57,16 @@ function filter(search){
 
   filteredList.splice(0);
   fileList.forEach( file => {
-    if(fileMatches(file,searchTerms)){
+    if(fileMatches(file.path,searchTerms)){
       filteredList.push(file);
     }
   });
 }
 
 function fileMatches(file, searchTerms) {
+  if(fileIgnored(file)) {
+    return false;
+  }
   if(!fileInLibrary(file)) {
     return false
   }
@@ -74,5 +79,8 @@ function fileInLibrary(file) {
   return libs.reduce( (m,l) => m || file.startsWith(l), false );
 }
 
+function fileIgnored(file) {
+  return ignores.reduce( (m,l) => m || file.includes(l), false );
+}
 
 export default { get, filter }

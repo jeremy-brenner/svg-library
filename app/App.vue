@@ -1,31 +1,22 @@
 <template>
   <div id="app">
     <Settings />
-    <input type="text" v-model="searchText" @input="doSearch">
-   <!-- <DirList open="true" /> -->
-{{ files.length }}
+    <Search />
+    <SVGList />
   </div>
 </template>
 
 <script>
-import Settings from './components/Settings.vue'
-import fileListStore from './stores/FileListStore.js';
+import Settings from './components/Settings.vue';
+import SVGList from './components/SVGList.vue';
+import Search from './components/Search.vue';
 
 export default {
   name: 'App',
   components: {
-    Settings
-  },
-  data() {
-    return {
-      searchText: '',
-      files: fileListStore.get()
-    }
-  },
-  methods: {
-    doSearch() {
-      fileListStore.filter(this.searchText);
-    }
+    Settings,
+    SVGList,
+    Search
   }
 }
 </script>

@@ -6,7 +6,7 @@ import postcss from 'rollup-plugin-postcss';
 const production = !process.env.ROLLUP_WATCH;
 
 export default {
-	input: 'app/main.js',
+	input: 'app/app.js',
 	external: ['Vue'],
 	output: {
 		sourcemap: true,

@@ -16,6 +16,13 @@
          {{ library }}
          <button @click="removeLibrary(library)">remove</button>
        </div>
+       SVG size
+       <input 
+         type=number 
+         v-model="svgSize"
+         v-on:keyup.enter="setSvgSize"
+        >
+        <button @click="setSvgSize">set</button>
     </div>
   </div>    
 </template>
@@ -32,6 +39,7 @@ export default {
     return {
       libraries: settingsStore.getLibraries(),
       dir: '',
+      svgSize: null,
       open: false
     }
   },
@@ -45,7 +53,15 @@ export default {
     },
     toggleSettings() {
       this.open = !this.open;
+    },
+    setSvgSize(e) {
+      settingsStore.setSvgSize(this.svgSize)
     }
+  },
+  mounted() {
+    settingsStore.on('svgSize', size => {
+      this.svgSize = size
+    });
   }
 }
 </script>
