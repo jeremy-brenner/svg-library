@@ -3,6 +3,7 @@ const fs = require('fs');
 class SVGFile {
   constructor(path) {
     this.path = path;
+    this.visible = true;
     this.urlData = '';
     this.load();
   }
@@ -13,6 +14,9 @@ class SVGFile {
         }
         this.urlData = `data:image/svg+xml;base64,${f.toString("base64")}`;
     });
+  }
+  setVisible(v) {
+    this.visible = v;
   }
 }
 

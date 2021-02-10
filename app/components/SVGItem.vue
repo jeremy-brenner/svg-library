@@ -1,6 +1,6 @@
 <template>
   <img 
-    v-if="svgFile.urlData"
+    v-if="svgFile.urlData && svgFile.visible"
     :title="svgFile.path"
     :src="svgFile.urlData"
     :style="myStyle"

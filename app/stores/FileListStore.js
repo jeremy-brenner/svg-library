@@ -5,7 +5,6 @@ import SVGFile from './SVGFile.js';
 const ignores = ['__MACOSX'];
 
 const fileList = [];
-const filteredList = [];
 
 let searchTerms = [];
 
@@ -29,24 +28,18 @@ function removeLibrary(dir) {
 function addFile(filePath) {
   const file = new SVGFile(filePath);
   fileList.push(file);
-  if(fileMatches(file.path,searchTerms)){
-    filteredList.push(file);
-  }
+  file.setVisible(fileMatches(file.path,searchTerms))
 }
 
 function removeFile(filePath) {
-  const i1 = fileList.findIndex(f => f.path == filePath);
-  if(i1>-1) {
+  const i = fileList.findIndex(f => f.path == filePath);
+  if(i>-1) {
     fileList.splice(i1,1);
-  }
-  const i2 = filteredList.findIndex(f => f.path == filePath);
-  if(i2>-1) {
-    filteredList.splice(i2,1);
   }
 }
 
 function get() {
-  return filteredList
+  return fileList
 }
 
 function filter(search){
@@ -55,11 +48,8 @@ function filter(search){
     .filter(s => s !== '')
     .map(s => s.toLowerCase());
 
-  filteredList.splice(0);
   fileList.forEach( file => {
-    if(fileMatches(file.path,searchTerms)){
-      filteredList.push(file);
-    }
+    file.setVisible(fileMatches(file.path,searchTerms))
   });
 }
 
