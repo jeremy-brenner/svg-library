@@ -11,7 +11,7 @@
 <script>
 
 import SVGItem from './SVGItem.vue';
-import fileListStore from '../stores/FileListStore.js';
+import fileCacheStore from '../stores/FileCacheStore.js';
 
 export default {
   name: 'SVGList',
@@ -20,7 +20,7 @@ export default {
   },
   data() {
     return {
-       fileList: fileListStore.get()
+       fileList: fileCacheStore.get()
     }
   }
 }

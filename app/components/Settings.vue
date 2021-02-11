@@ -28,6 +28,8 @@
 </template>
 <script>
 import settingsStore from '../stores/SettingsStore.js';
+import fileLibraryStore from '../stores/FileLibraryStore.js';
+
 const path = require('path');
 
 export default {
@@ -37,7 +39,7 @@ export default {
   },
   data() {
     return {
-      libraries: settingsStore.getLibraries(),
+      libraries: fileLibraryStore.getLibraries(),
       dir: '',
       svgSize: null,
       open: false
@@ -45,11 +47,11 @@ export default {
   },
   methods: {
     addLibrary() {
-      settingsStore.addLibrary(path.join(this.dir,'/'));
+      fileLibraryStore.addLibrary(path.join(this.dir,'/'));
       this.dir = '';
     },
     removeLibrary(dir) {
-      settingsStore.removeLibrary(dir)
+      fileLibraryStore.removeLibrary(dir)
     },
     toggleSettings() {
       this.open = !this.open;
